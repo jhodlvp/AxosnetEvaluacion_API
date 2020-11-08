@@ -36,14 +36,18 @@ namespace AxosnetEvaluacion_API
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            services.AddCors(o =>
+            {
+                o.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader());
+            });
+
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title="Gestion de recibos API", 
                     Version = "v1",
                     Description = "Backend para sistema de gestión de recibos"});
-
-                var xfile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xpath = Path.Combine(xfile);
-                c.IncludeXmlComments(xpath);
             });
 
             services.AddControllers();
@@ -73,6 +77,7 @@ namespace AxosnetEvaluacion_API
 
             app.UseHttpsRedirection();
 
+            app.UseCors("CorsPolicy");
 
             app.UseRouting();
 
