@@ -12,6 +12,9 @@ using AxosnetEvaluacion_API.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
+using System.Reflection;
+using System.IO;
 
 namespace AxosnetEvaluacion_API
 {
@@ -32,6 +35,17 @@ namespace AxosnetEvaluacion_API
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddSwaggerGen(c => {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title="Gestion de recibos API", 
+                    Version = "v1",
+                    Description = "Backend para sistema de gestión de recibos"});
+
+                var xfile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xpath = Path.Combine(xfile);
+                c.IncludeXmlComments(xpath);
+            });
+
             services.AddControllers();
         }
 
@@ -49,6 +63,13 @@ namespace AxosnetEvaluacion_API
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c => {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Gestion de recibos API");
+                c.RoutePrefix = "";
+            });
 
             app.UseHttpsRedirection();
 
