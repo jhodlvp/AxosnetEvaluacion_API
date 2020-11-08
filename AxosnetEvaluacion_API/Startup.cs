@@ -15,6 +15,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.IO;
+using AutoMapper;
+using AxosnetEvaluacion_API.Mappings;
 
 namespace AxosnetEvaluacion_API
 {
@@ -43,6 +45,8 @@ namespace AxosnetEvaluacion_API
                     .AllowAnyMethod()
                     .AllowAnyHeader());
             });
+
+            services.AddAutoMapper(typeof(Maps));
 
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title="Gestion de recibos API", 
