@@ -17,6 +17,8 @@ using System.Reflection;
 using System.IO;
 using AutoMapper;
 using AxosnetEvaluacion_API.Mappings;
+using AxosnetEvaluacion_API.Contracts;
+using AxosnetEvaluacion_API.Services;
 
 namespace AxosnetEvaluacion_API
 {
@@ -54,6 +56,8 @@ namespace AxosnetEvaluacion_API
                     Description = "Backend para sistema de gestión de recibos"});
             });
 
+            services.AddScoped<IMonedaRepository, MonedaRepository>();
+            
             services.AddControllers();
         }
 
