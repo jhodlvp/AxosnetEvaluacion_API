@@ -12,7 +12,9 @@ namespace AxosnetEvaluacion_API.Mappings
     {
         public Maps()
         {
-            CreateMap<Moneda, MonedaDTO>().ReverseMap();
+            CreateMap<Moneda, MonedaGetDTO>().ReverseMap();
+            CreateMap<Moneda, MonedaPostDTO>().ReverseMap();
+            CreateMap<Moneda, MonedaUpdateDTO>().ReverseMap();
         }
     }
 }

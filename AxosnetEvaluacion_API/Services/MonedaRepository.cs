@@ -41,6 +41,11 @@ namespace AxosnetEvaluacion_API.Services
             return moneda;
         }
 
+        public async Task<bool> isExists(int id)
+        {
+            return await _db.Monedas.AnyAsync(q => q.Id == id);
+        }
+
         public async Task<bool> Save()
         {
             var changes = await _db.SaveChangesAsync();
