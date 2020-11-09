@@ -12,36 +12,36 @@ using Microsoft.AspNetCore.Mvc;
 namespace AxosnetEvaluacion_API.Controllers
 {
     /// <summary>
-    /// Endpoints para interactuar con la tabla Monedas en la base de datos
+    /// Endpoints para interactuar con la tabla Proveedors en la base de datos
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public class MonedasController : ControllerBase
+    public class ProveedorsController : ControllerBase
     {
-        private readonly IMonedaRepository _monedaRepository;
+        private readonly IProveedorRepository _proveedorRepository;
         private readonly IMapper _mapper;
 
-        public MonedasController(IMonedaRepository monedaRepository,
+        public ProveedorsController(IProveedorRepository proveedorRepository,
             IMapper mapper)
         {
-            _monedaRepository = monedaRepository;
+            _proveedorRepository = proveedorRepository;
             _mapper = mapper;
         }
 
         /// <summary>
-        /// Obtiene todas las monedas
+        /// Obtiene todos los proveedores
         /// </summary>
-        /// <returns>List: Monedas</returns>
+        /// <returns>List: Proveedors</returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetMonedas()
+        public async Task<IActionResult> GetProveedors()
         {
             try
             {
-                var monedas = await _monedaRepository.FindAll();
-                var response = _mapper.Map<IList<MonedaGetDTO>>(monedas);
+                var proveedors = await _proveedorRepository.FindAll();
+                var response = _mapper.Map<IList<ProveedorGetDTO>>(proveedors);
                 return Ok(response);
             }
             catch (Exception e)
@@ -51,25 +51,25 @@ namespace AxosnetEvaluacion_API.Controllers
         }
 
         /// <summary>
-        /// Obtiene un registro de Moneda usando su Id
+        /// Obtiene un Proveedor usando su id
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>Objeto: Moneda</returns>
+        /// <returns></returns>
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetMoneda(int id)
+        public async Task<IActionResult> GetProveedor(int id)
         {
             try
             {
-                var moneda = await _monedaRepository.FindById(id);
+                var proveedor = await _proveedorRepository.FindById(id);
 
-                if (moneda == null)
+                if (proveedor == null)
                 {
                     return NotFound();
                 }
-                var response = _mapper.Map<MonedaGetDTO>(moneda);
+                var response = _mapper.Map<ProveedorGetDTO>(proveedor);
                 return Ok(response);
             }
             catch (Exception e)
@@ -79,19 +79,19 @@ namespace AxosnetEvaluacion_API.Controllers
         }
 
         /// <summary>
-        /// Crea una moneda
+        /// Crea un Proveedor
         /// </summary>
-        /// <param name="monedaDTO"></param>
+        /// <param name="proveedorDto"></param>
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Create([FromBody] MonedaPostDTO monedaDTO)
+        public async Task<IActionResult> Create([FromBody] ProveedorPostDTO proveedorDto)
         {
             try
             {
-                if (monedaDTO == null)
+                if (proveedorDto == null)
                 {
                     return BadRequest(ModelState);
                 }
@@ -100,13 +100,13 @@ namespace AxosnetEvaluacion_API.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var moneda = _mapper.Map<Moneda>(monedaDTO);
-                var isSuccess = await _monedaRepository.Create(moneda);
+                var proveedor = _mapper.Map<Proveedor>(proveedorDto);
+                var isSuccess = await _proveedorRepository.Create(proveedor);
                 if (!isSuccess)
                 {
                     return InternalError("Error al crear la Moneda");
                 }
-                return Created("Create", new { moneda });
+                return Created("Create", new { proveedor });
             }
             catch (Exception e)
             {
@@ -115,26 +115,26 @@ namespace AxosnetEvaluacion_API.Controllers
         }
 
         /// <summary>
-        /// Actualiza un registro de Moneda
+        /// Actualiza un registro de Proveedor
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="monedaDTO"></param>
+        /// <param name="proveedorDto"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Update(int id, [FromBody] MonedaUpdateDTO monedaDTO)
+        public async Task<IActionResult> Update(int id, [FromBody] ProveedorUpdateDTO proveedorDto)
         {
             try
             {
-                if (id < 1 || monedaDTO == null || id != monedaDTO.Id)
+                if (id < 1 || proveedorDto == null || id != proveedorDto.Id)
                 {
                     return BadRequest();
                 }
 
-                var isExists = await _monedaRepository.isExists(id);
+                var isExists = await _proveedorRepository.isExists(id);
                 if (!isExists)
                 {
                     return NotFound();
@@ -143,8 +143,8 @@ namespace AxosnetEvaluacion_API.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-                var moneda = _mapper.Map<Moneda>(monedaDTO);
-                var isSuccess = await _monedaRepository.Update(moneda);
+                var proveedor = _mapper.Map<Proveedor>(proveedorDto);
+                var isSuccess = await _proveedorRepository.Update(proveedor);
                 if (!isSuccess)
                 {
                     return InternalError("Error al actualizar el registro");
@@ -158,7 +158,7 @@ namespace AxosnetEvaluacion_API.Controllers
         }
 
         /// <summary>
-        /// Borra un registro de Moneda
+        /// Borra un registro de Proveedor
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -175,13 +175,13 @@ namespace AxosnetEvaluacion_API.Controllers
                 {
                     return BadRequest();
                 }
-                var isExists = await _monedaRepository.isExists(id);
+                var isExists = await _proveedorRepository.isExists(id);
                 if (!isExists)
                 {
                     return NotFound();
                 }
-                var moneda = await _monedaRepository.FindById(id);
-                var isSuccess = await _monedaRepository.Delete(moneda);
+                var proveedor = await _proveedorRepository.FindById(id);
+                var isSuccess = await _proveedorRepository.Delete(proveedor);
                 if (!isSuccess)
                 {
                     return InternalError("Error al eliminar registro");

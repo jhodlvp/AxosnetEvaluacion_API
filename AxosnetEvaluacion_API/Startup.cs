@@ -57,6 +57,7 @@ namespace AxosnetEvaluacion_API
             });
 
             services.AddScoped<IMonedaRepository, MonedaRepository>();
+            services.AddScoped<IProveedorRepository, ProveedorRepository>();
             
             services.AddControllers();
         }
