@@ -21,6 +21,11 @@ namespace AxosnetEvaluacion_API.Mappings
             CreateMap<Proveedor, ProveedorGetDTO>().ReverseMap();
             CreateMap<Proveedor, ProveedorPostDTO>().ReverseMap();
             CreateMap<Proveedor, ProveedorUpdateDTO>().ReverseMap();
+
+            // Mapas Recibo
+            CreateMap<Recibo, ReciboGetDTO>().ReverseMap();
+            CreateMap<Recibo, ReciboPostDTO>().ReverseMap();
+            CreateMap<Recibo, ReciboUpdateDTO>().ReverseMap();
         }
     }
 }
