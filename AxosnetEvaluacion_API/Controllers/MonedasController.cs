@@ -6,6 +6,7 @@ using AutoMapper;
 using AxosnetEvaluacion_API.Contracts;
 using AxosnetEvaluacion_API.Data;
 using AxosnetEvaluacion_API.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,6 +17,7 @@ namespace AxosnetEvaluacion_API.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Administrador")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public class MonedasController : ControllerBase
     {
